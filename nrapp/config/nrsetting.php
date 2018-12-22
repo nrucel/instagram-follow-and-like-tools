@@ -121,7 +121,7 @@ $config['uyeBanla'] = "";
 
 //Reklamları aktif etmek için 1 , pasif yapmak için 0 yazın
 $config['reklamAktif'] = 0;
-$config['reklamKodu'] = '<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins class="adsbygoogle"	style="display:block"	data-ad-client="ca-pub-8773440085190388"	data-ad-slot="9576769099"	data-ad-format="auto"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></center>';
+$config['reklamKodu'] = '<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins class="adsbygoogle"	style="display:block"	data-ad-client="ca-pub-87734405190388"	data-ad-slot="95767699"	data-ad-format="auto"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></center>';
 
 
 
