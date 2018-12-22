@@ -37,7 +37,7 @@ e-mail content: login for email, password and real name.<br />
 
 
 ## Önemli Ayarlar / Important Settings
-**dosya / file: ** nrapp/config/nrsetting.php
+**dosya / file:** nrapp/config/nrsetting.php
 
 **size verdiğim key / the key I gave you**
 ```php
