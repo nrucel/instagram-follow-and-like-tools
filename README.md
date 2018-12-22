@@ -14,7 +14,7 @@ e-mail title: nrucel ig tools key<br />
 e-mail content: login for email, password and real name.<br />
 
 ## Kurulum / Setup
-**1)** public_html dizinine tüm dosyaları yükleyin. / Upload all files to the public_html directory.
+**1)** public_html dizinine tüm dosyaları yükleyin. / Upload all files to the public_html directory.<br />
 **2)** nrapp/config/database.php veritabanı bilgilerinizi girin. / Enter your database information.
 ```php
 	'username' => 'db_username',
