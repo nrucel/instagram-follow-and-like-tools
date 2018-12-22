@@ -1,0 +1,92 @@
+
+.navbar-brand>img {max-height: 100%;}
+.profile-cover {background-size: cover;
+    background-position: center center;position: relative;padding:55px 16px;}
+.profile-cover::before {
+	content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0, 0.5);
+}
+.icerigeGit a:first-child {margin-right:10px;}
+a {word-break: break-all;}
+.cover-user {position: relative;z-index:1;text-align: center;margin-bottom: 10px !important}
+.cover-user>div {display:table-cell;}
+.cover-user .cover-icon {background:#FFF;}
+.text-center {position: relative;z-index:1;}
+.profile-info-name {font-size:30px;margin-bottom: 10px !important; }
+.profile-info-name .title-color {color: #FFF !important;}
+.profile-info-name + div a {color: #FFF !important;}
+.cover-user .avatar {width:130px;height: 130px;}
+aside#menubar {text-align: center;}
+body.menubar-top .app-menu {float:none;}
+ul.submenu {text-align: left;}
+.widget-title {font-size:20px;font-family: 'Titillium Web',"Roboto";}
+@media (max-width: 767px) {
+	.navbar-header {text-align: center;}
+	.navbar-header a.navbar-brand {
+		float: none;
+	    left: inherit;
+	    margin: 0 auto;
+	    position: inherit;
+	    display: inline-block;
+	}
+	.navbar-toolbar.navbar-toolbar-right{display: inline-block;float:none;}
+	.navbar-collapse {text-align: center;}
+}
+p#kalanSure {padding:16px;font-size:20px;text-align:center;font-family: 'Titillium Web',"Roboto";font-weight: 400; margin:0;}
+p#kalanSureMesaj{font-size: 16px;text-align: center;padding: 16px;}
+.tanitim {padding:16px;}
+.media-footer {
+	background:#f7f7f7;
+	padding:15px 25px;
+}
+
+.media-footer .istatistikler {text-align: right;}
+.media-footer .istatistikler span {padding-right:10px;font-family: 'Titillium Web',"Roboto"}
+.media-footer .istatistikler span:last-child {padding-right: 0;}
+
+#profile-stream .sayfa {display:none;}
+#profile-stream .sayfa.active {display:block;}
+
+.pagination {
+	display: table;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.emojiGonderimFormu img {
+	max-width:200px;
+}
+
+.emojiGonderimFormu label.begeni-emoji {cursor:pointer;}
+.emojiGonderimFormu label.begeni-emoji input {position: absolute;left: -9999px;}
+.emojiGonderimFormu label.begeni-emoji img {max-width: 60px;padding: 10px;}
+.emojiGonderimFormu label.begeni-emoji input:checked + img {background: #DEDEDE;}
+
+.dahaFazlaYukle {
+	display: block;
+	padding: 20px 0;
+	text-align: center;
+}
+
+
+
+body.vip p.hosgeldin {
+    line-height: 60px;
+    text-align: right;
+    margin: 0;
+}
+@media (min-width: 768px) {
+	body.vip.menubar-top {
+		padding-top: 60px;
+	}
+	.navbar-inverse .navbar-nav>li>a {color:#FFF;}
+}
+
+tr.danger {
+	color:#333;
+}
