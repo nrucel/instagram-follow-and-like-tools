@@ -66,45 +66,45 @@ diğer tüm ayarları nrapp/config/nrsetting.php üzerinden yapabilirsiniz. / al
 ## Ekran Görüntüsü / Screen Shot
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/anasayfa.jpg">
+  <img width="850" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/anasayfa.jpg">
 </p>
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/blog.jpg">
+  <img width="850" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/blog.jpg">
 </p>
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/blogicerik.jpg">
+  <img width="850" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/blogicerik.jpg">
 </p>
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/blog.jpg">
+  <img width="850" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/blog.jpg">
 </p>
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/feed.jpg">
+  <img width="850" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/feed.jpg">
 </p>
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/feedicerik.jpg">
+  <img width="850" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/feedicerik.jpg">
 </p>
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/giris.jpg">
+  <img width="850" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/giris.jpg">
 </p>
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/checkpoint.jpg">
+  <img width="850" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/checkpoint.jpg">
 </p>
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/check.jpg">
+  <img width="850" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/check.jpg">
 </p>
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/panel.jpg">
+  <img width="850" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/panel.jpg">
 </p>
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/takip.jpg">
+  <img width="850" height="400" src="https://github.com/nrucel/instagram-follow-and-like-tools/blob/master/resim/takip.jpg">
 </p>
