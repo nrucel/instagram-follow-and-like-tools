@@ -27,15 +27,13 @@ e-mail content: login for email, password and real name.<br />
 **email:** nurullahcelik@yandex.com<br />
 **password:** nrcl<br />
 
-------------
+
 
 
 ## **cron ayarları / cron setting**
 **site.com/cron/krediVer/cronkey** ( kredi yenileme / credit refresh )<br />
 **site.com/cron/feed/cronkey**  ( instagram popüler paylaşımları çekme / get instagram popular feed )<br />
 **site.com/cron/tag/cronkey** ( belirtilen etiketlerdeki paylaşımları çeker / pulls shares from specified tags )<br />
-
-------------
 
 
 ## Önemli Ayarlar / Important Settings
@@ -62,7 +60,7 @@ $config['siteAdi'] = "website";
 ```
 diğer tüm ayarları nrapp/config/nrsetting.php üzerinden yapabilirsiniz. / all other settings can be done via nrapp /config/nrsetting.php.
 
-------------
+
 
 
 ## Ekran Görüntüsü / Screen Shot
