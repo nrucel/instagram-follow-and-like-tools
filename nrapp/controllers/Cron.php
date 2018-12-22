@@ -15,9 +15,16 @@ class Cron extends NR_Controller {
 			exit;
 		}
 
+		//üye takipçi kredisi yenileme
 		$this->db
 		->set("takipKredi", $this->config->item("tekrarUyeTakipKredi"))
 		->where("takipKredi <", $this->config->item("tekrarUyeTakipKredi"))
+		->update("uyeler");
+
+		//üye beğeni kredidisi yenileme
+		$this->db
+		->set("begeniKredi", $this->config->item("tekrarUyeBegeniKredi"))
+		->where("begeniKredi <", $this->config->item("tekrarUyeBegeniKredi"))
 		->update("uyeler");
 	}
 
