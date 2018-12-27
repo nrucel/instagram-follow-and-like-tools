@@ -1,30 +1,36 @@
--- MySQL dump 10.16  Distrib 10.2.19-MariaDB, for Linux (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 4.8.3
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost    Database: nrucel
--- ------------------------------------------------------
--- Server version	10.2.19-MariaDB
+-- Anamakine: localhost:3306
+-- Üretim Zamanı: 27 Ara 2018, 12:51:03
+-- Sunucu sürümü: 10.2.20-MariaDB
+-- PHP Sürümü: 7.2.7
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `uyeler`
+-- Veritabanı: `tnrucelcom49_i`
 --
 
-DROP TABLE IF EXISTS `uyeler`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `uyeler`
+--
+
 CREATE TABLE `uyeler` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
-  `igID` bigint(20) unsigned NOT NULL,
+  `id` int(255) NOT NULL,
+  `igID` bigint(20) UNSIGNED NOT NULL,
   `adSoyad` varchar(255) CHARACTER SET utf8 COLLATE utf8_turkish_ci NOT NULL,
   `igFoto` varchar(255) CHARACTER SET utf8 COLLATE utf8_turkish_ci NOT NULL,
   `kullaniciAdi` varchar(255) CHARACTER SET utf8 COLLATE utf8_turkish_ci NOT NULL,
@@ -39,66 +45,73 @@ CREATE TABLE `uyeler` (
   `yorumBegeniKredi` int(10) NOT NULL,
   `canliYayinKredi` int(10) NOT NULL,
   `sessID` varchar(12) CHARACTER SET utf8 NOT NULL,
-  `ipAdres` varchar(255) CHARACTER SET utf8 COLLATE utf8_turkish_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `ipAdres` varchar(255) CHARACTER SET utf8 COLLATE utf8_turkish_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `uyeler`
+-- Tablo döküm verisi `uyeler`
 --
 
-LOCK TABLES `uyeler` WRITE;
-/*!40000 ALTER TABLE `uyeler` DISABLE KEYS */;
-INSERT INTO `uyeler` (`id`, `igID`, `adSoyad`, `igFoto`, `kullaniciAdi`, `takipEdilenSayisi`, `takipciSayisi`, `takipKredi`, `begeniKredi`, `yorumKredi`, `storyKredi`, `izlenmeKredi`, `saveKredi`, `yorumBegeniKredi`, `canliYayinKredi`, `sessID`, `ipAdres`) VALUES (1,9260881696,'deniz alpuğan','https://scontent-cdg2-1.cdninstagram.com/vp/857fdff8f647f8dbfc5718582c95c1d7/5C95E7F4/t51.2885-19/s150x150/47101021_235961533966518_8925778623407849472_n.jpg','denizalpugan49',1906,1173,18,30,30,30,30,30,30,30,'927264612','5.46.117.217'),(2,9302748592,'acar','https://scontent-cai1-1.cdninstagram.com/vp/dc651f3c631c68d6e0789e2d7c8af2e5/5C8EBFF1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg','azizqq1',5329,97,30,30,30,30,30,30,30,30,'8010928291','159.146.114.240');
-/*!40000 ALTER TABLE `uyeler` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `uyeler` (`id`, `igID`, `adSoyad`, `igFoto`, `kullaniciAdi`, `takipEdilenSayisi`, `takipciSayisi`, `takipKredi`, `begeniKredi`, `yorumKredi`, `storyKredi`, `izlenmeKredi`, `saveKredi`, `yorumBegeniKredi`, `canliYayinKredi`, `sessID`, `ipAdres`) VALUES
+(1, 9260881696, 'deniz alpuğan', 'https://scontent-cdg2-1.cdninstagram.com/vp/857fdff8f647f8dbfc5718582c95c1d7/5C95E7F4/t51.2885-19/s150x150/47101021_235961533966518_8925778623407849472_n.jpg', 'denizalpugan49', 1906, 1173, 18, 30, 30, 30, 30, 30, 30, 30, '927264612', '5.46.117.217');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `vipler`
+-- Tablo için tablo yapısı `vipler`
 --
 
-DROP TABLE IF EXISTS `vipler`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vipler` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `adSoyad` varchar(100) NOT NULL,
-  `sifre` varchar(30) NOT NULL,
-  `email` varchar(250) NOT NULL,
-  `yetkili` tinyint(1) NOT NULL DEFAULT 0,
+  `id` int(255) NOT NULL,
+  `adSoyad` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `sifre` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `yetkili` int(1) NOT NULL DEFAULT 0,
   `kayitTarihi` timestamp NOT NULL DEFAULT current_timestamp(),
-  `vipeNot` text NOT NULL,
-  `sessID` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `vipeNot` text CHARACTER SET utf8 NOT NULL,
+  `sessID` text CHARACTER SET utf8 NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `vipler`
+-- Tablo döküm verisi `vipler`
 --
 
-LOCK TABLES `vipler` WRITE;
-/*!40000 ALTER TABLE `vipler` DISABLE KEYS */;
-INSERT INTO `vipler` (`id`, `adSoyad`, `sifre`, `email`, `yetkili`, `kayitTarihi`, `vipeNot`, `sessID`) VALUES (4,'Nurullah','nrcl499-','nurullahcelik@yandex.com',1,'2017-06-05 21:00:00','','{\"1544918831\":8097165594808}');
-/*!40000 ALTER TABLE `vipler` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `vipler` (`id`, `adSoyad`, `sifre`, `email`, `yetkili`, `kayitTarihi`, `vipeNot`, `sessID`) VALUES
+(1, 'Nurullah Çelik', 'nrcl', 'nurullahcelik@yandex.com', 1, '2018-12-27 09:50:44', '', '');
 
 --
--- Dumping events for database 'nrucel'
+-- Dökümü yapılmış tablolar için indeksler
 --
 
 --
--- Dumping routines for database 'nrucel'
+-- Tablo için indeksler `uyeler`
 --
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+ALTER TABLE `uyeler`
+  ADD PRIMARY KEY (`id`);
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Tablo için indeksler `vipler`
+--
+ALTER TABLE `vipler`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Dökümü yapılmış tablolar için AUTO_INCREMENT değeri
+--
+
+--
+-- Tablo için AUTO_INCREMENT değeri `uyeler`
+--
+ALTER TABLE `uyeler`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `vipler`
+--
+ALTER TABLE `vipler`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2018-12-16  3:42:48
