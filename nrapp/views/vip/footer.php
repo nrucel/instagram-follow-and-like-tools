@@ -1,11 +1,11 @@
-	<div class="wrap p-t-0">
+    <div class="wrap p-t-0">
         <footer class="app-footer">
             <div class="clearfix">
                 <div class="copyright pull-left">Copyright 2019 &copy; <?=$this->config->item("siteAdresi")?></div>
             </div>
         </footer>
     </div>
-	</main>
+    </main>
 
 <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"

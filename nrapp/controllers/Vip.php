@@ -468,6 +468,10 @@ class Vip extends NR_Controller {
 
             }
 
+            if(!$zaman){
+                $zaman = date("d-m-Y");
+            }
+
             $yazi = array(
                     'blogUrl'       => $blogUrl,
                     'blogAdi'       => $blogAdi,
