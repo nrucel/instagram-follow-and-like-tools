@@ -1,4 +1,6 @@
 # nrucel IG Tools
+**example/örnek:** https://nettakipci.net **| Forum:** https://nrucel.me/forum **| Discord:** https://discord.gg/veWZcfD
+<br><br>
 **TR:** bu araç ile instagram giriş yapma, takipçi arttırma ve beğeni gönderme işlemlerini yapabilirsiniz. Bu scripti kullanabilmeniz için benim tarafımdan size verilmiş bir anahtara ihtiyacınız olacak. Bu anahtar ile sistem sorunsuz çalışacaktır. Sistem api üzerine kuruludur. proxy gerektirmez. girişlerde doğrulama isteyen hesaplar site üzerinden bu işlemi yapabilir.
 <br /><br />
 **Anahtarı nasıl alırım ?** <br />
