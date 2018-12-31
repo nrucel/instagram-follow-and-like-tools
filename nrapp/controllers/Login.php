@@ -11,15 +11,17 @@ class Login extends NR_Controller
 
     function login(){
 
+        //gelen veriyi değere atıyorum
         $kAdi = $this->input->post("username");
         $sifre = $this->input->post("password");
 
-
+        //eğer gelen veriler boş ise hata mesajı göster
         if(empty($kAdi) || empty($sifre)) {
                 print_r(json_encode(array("status" => "error","message" => "Lütfen tüm bilgileri doldur.")));
                 exit;
         }
 
+        //eğer gelen veride istediğim değerlerden oluşmuyor ise hata mesajı göster (sadece rakam,harf,nokta ve tire kabul edilir)
         if(!preg_match('/^[a-zA-Z0-9._]+$/', $kAdi)) {
 
             print_r(json_encode(array("status" => "error","message" => "Giriş yapılamadı. Kullanıcı adı ve şifreni dikkatlice kontrol et lütfen.")));
@@ -27,18 +29,24 @@ class Login extends NR_Controller
 
         }
 
+        //verileri apiye post ediyoruz
         $data = array(
             "AuthKey"   => $this->config->item("AuthKey"),
             "username"  => $kAdi,
             "password"  => $sifre
         );
 
+        //dönen veriyi değere aktarıyoruz.
         $ig = $this->Nrmod->post("login",$data);
 
+        //eğer işlem başarılı ise
         if(json_decode($ig)->status == "ok")
         {
+
+            //gelen verileri değere atıyoruz
             $user = json_decode($ig)->data;
 
+            //eğer resimsiz üyeler giriş yapmasın aktif ise ve kişi resimsiz ise hata mesajı göster
             if($this->config->item("resimsizUye") == 1 && !stristr($user->igFoto, "s150x150"))
             {
 
@@ -47,13 +55,17 @@ class Login extends NR_Controller
 
             }
 
+            //banlı üyeler için array oluşturuyoruz
             $banned = array();
 
+            //eğer banlı üye var ise içeriye almıyoruz ve hata mesajı gösteriyoruz
             if($this->config->item("uyeBanla") != "")
             {
 
+                //banlı üyeleri array'e ekliyoruz
                 $banned = explode(",", $this->config->item("uyeBanla"));
 
+                //eğer kullanıcı banlı ise hata mesajı gösteriyoruz
                 if(in_array($user->igID, $banned))
                 {
 
@@ -64,6 +76,8 @@ class Login extends NR_Controller
 
             }
 
+
+            //gelen tüm verileri kaydetmek üzere array'e alıyoruz
             $veriler = [
                 "igID"              => $user->igID,
                 "adSoyad"           => $user->adSoyad,
@@ -74,44 +88,59 @@ class Login extends NR_Controller
                 "ipAdres"           => $this->input->ip_address(),
             ];
 
+            //giren kullanıcıyı veritabanında arıyoruz
             $kontrol = $this->Nrmod->tekGetir(["igID" => $user->igID, ], "uyeler");
 
+            //eğer var ise veritabanında gerekli bilgilerini güncelliyoruz
             if($kontrol)
             {
-
+                //düzenleme işlemi
                 $kaydet = $this->Nrmod->duzenle(["igID" => $user->igID], "uyeler", $veriler);
 
             }
+
+            //eğer veritabanında yoksa yeni üyeyi ekliyoruz
             else
             {
 
-                    $veriler['takipKredi']        = $this->config->item("yeniUyeTakipKredi");
-                    $veriler['begeniKredi']       = $this->config->item("yeniUyeBegeniKredi");
-                    $veriler['yorumKredi']        = $this->config->item("yeniUyeYorumKredi");
-                    $veriler['storyKredi']        = $this->config->item("yeniUyeStoryKredi");
-                    $veriler['izlenmeKredi']      = $this->config->item("yeniUyeVideoKredi");
-                    $veriler['saveKredi']         = $this->config->item("yeniUyeSaveKredi");
-                    $veriler['yorumBegeniKredi']  = $this->config->item("yeniUyeYorumBegeniKredi");
-                    $veriler['canliYayinKredi']   = $this->config->item("yeniUyeCanliYayinKredi");
+                //üye ilk kez girdiği için kredilerini belirliyoruz
+                $veriler['takipKredi']        = $this->config->item("yeniUyeTakipKredi");
+                $veriler['begeniKredi']       = $this->config->item("yeniUyeBegeniKredi");
+                $veriler['yorumKredi']        = $this->config->item("yeniUyeYorumKredi");
+                $veriler['storyKredi']        = $this->config->item("yeniUyeStoryKredi");
+                $veriler['izlenmeKredi']      = $this->config->item("yeniUyeVideoKredi");
+                $veriler['saveKredi']         = $this->config->item("yeniUyeSaveKredi");
+                $veriler['yorumBegeniKredi']  = $this->config->item("yeniUyeYorumBegeniKredi");
+                $veriler['canliYayinKredi']   = $this->config->item("yeniUyeCanliYayinKredi");
 
+                //veritabanına ekleme işlemi
                 $kaydet = $this->Nrmod->ekle("uyeler", $veriler);
 
             }
 
+            //eğer veritabanına eklendiyse yada düzenleme başarılı oldu ise başarılı diyoruz
             if($kaydet)
             {
 
+                //recaptcha kontrol alanına girebilmesi için session oluşturuyoruz
                 $this->session->set_userdata("rekey", $user->igID);
                 
+                //kullanıcının verilerini içerde kullanmak için session'a ekliyoruz
                 $this->session->set_userdata("uye", $veriler);
+
+                //başarılı mesajını gösteriyoruz
                 print_r(json_encode(array("status" => "ok","message" => "Başarılı. Giriş yapıyorsunuz..")));
             }
+
+            //eğer veritabanına ekleme yada düzenleme başarısız oldu ise hata mesajı gösteriyoruz
             else
             {
                 print_r(json_encode(array("status" => "error","message" => "Bir hata oluştu")));
             }
 
         }
+
+        //giriş işlemi başarısız ise hata mesajını gösteriyoruz
         else
         {
             print_r($ig);
@@ -166,7 +195,112 @@ class Login extends NR_Controller
         );
 
         $ig = $this->Nrmod->post("telKodOnay",$data);
-        print_r($ig);
+
+
+        //eğer işlem başarılı ise
+        if(json_decode($ig)->status == "ok")
+        {
+
+            //gelen verileri değere atıyoruz
+            $user = json_decode($ig)->data;
+
+            //eğer resimsiz üyeler giriş yapmasın aktif ise ve kişi resimsiz ise hata mesajı göster
+            if($this->config->item("resimsizUye") == 1 && !stristr($user->igFoto, "s150x150"))
+            {
+
+               print_r(json_encode(array("status" => "error","message" => "Profil fotoğrafı olmayan hesaplar sisteme giriş yapamaz.!")));
+               exit;
+
+            }
+
+            //banlı üyeler için array oluşturuyoruz
+            $banned = array();
+
+            //eğer banlı üye var ise içeriye almıyoruz ve hata mesajı gösteriyoruz
+            if($this->config->item("uyeBanla") != "")
+            {
+
+                //banlı üyeleri array'e ekliyoruz
+                $banned = explode(",", $this->config->item("uyeBanla"));
+
+                //eğer kullanıcı banlı ise hata mesajı gösteriyoruz
+                if(in_array($user->igID, $banned))
+                {
+
+                    print_r(json_encode(array("status" => "error","message" => "hesabınız bu siteye girişi engellenmiştir. Yönetici ile iletişime geçiniz.")));
+                    exit;
+
+                }
+
+            }
+
+
+            //gelen tüm verileri kaydetmek üzere array'e alıyoruz
+            $veriler = [
+                "igID"              => $user->igID,
+                "adSoyad"           => $user->adSoyad,
+                "kullaniciAdi"      => $user->kullaniciAdi,
+                "takipciSayisi"     => $user->takipciSayisi,
+                "takipEdilenSayisi" => $user->takipEdilenSayisi,
+                "igFoto"            => $user->igFoto,
+                "ipAdres"           => $this->input->ip_address(),
+            ];
+
+            //giren kullanıcıyı veritabanında arıyoruz
+            $kontrol = $this->Nrmod->tekGetir(["igID" => $user->igID, ], "uyeler");
+
+            //eğer var ise veritabanında gerekli bilgilerini güncelliyoruz
+            if($kontrol)
+            {
+                //düzenleme işlemi
+                $kaydet = $this->Nrmod->duzenle(["igID" => $user->igID], "uyeler", $veriler);
+
+            }
+
+            //eğer veritabanında yoksa yeni üyeyi ekliyoruz
+            else
+            {
+
+                //üye ilk kez girdiği için kredilerini belirliyoruz
+                $veriler['takipKredi']        = $this->config->item("yeniUyeTakipKredi");
+                $veriler['begeniKredi']       = $this->config->item("yeniUyeBegeniKredi");
+                $veriler['yorumKredi']        = $this->config->item("yeniUyeYorumKredi");
+                $veriler['storyKredi']        = $this->config->item("yeniUyeStoryKredi");
+                $veriler['izlenmeKredi']      = $this->config->item("yeniUyeVideoKredi");
+                $veriler['saveKredi']         = $this->config->item("yeniUyeSaveKredi");
+                $veriler['yorumBegeniKredi']  = $this->config->item("yeniUyeYorumBegeniKredi");
+                $veriler['canliYayinKredi']   = $this->config->item("yeniUyeCanliYayinKredi");
+
+                //veritabanına ekleme işlemi
+                $kaydet = $this->Nrmod->ekle("uyeler", $veriler);
+
+            }
+
+            //eğer veritabanına eklendiyse yada düzenleme başarılı oldu ise başarılı diyoruz
+            if($kaydet)
+            {
+
+                //recaptcha kontrol alanına girebilmesi için session oluşturuyoruz
+                $this->session->set_userdata("rekey", $user->igID);
+                
+                //kullanıcının verilerini içerde kullanmak için session'a ekliyoruz
+                $this->session->set_userdata("uye", $veriler);
+
+                //başarılı mesajını gösteriyoruz
+                print_r(json_encode(array("status" => "ok","message" => "Başarılı. Giriş yapıyorsunuz..")));
+            }
+
+            //eğer veritabanına ekleme yada düzenleme başarısız oldu ise hata mesajı gösteriyoruz
+            else
+            {
+                print_r(json_encode(array("status" => "error","message" => "Bir hata oluştu. Sayfası yenileyip tekrar giriş yapın", "data" => $veriler)));
+            }
+        } 
+
+        //işlem başarısız ise
+        else {
+            print_r($ig);
+        }
 
     }
 

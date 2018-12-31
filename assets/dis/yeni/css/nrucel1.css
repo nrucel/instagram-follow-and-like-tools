@@ -1,0 +1,29 @@
+.goog-logo-link {
+   display:none !important;
+} 
+
+.goog-te-gadget{
+  color: transparent !important;
+}
+
+.goog-te-banner-frame.skiptranslate {
+    display: none !important;
+    } 
+
+.goog-te-gadget .goog-te-combo {
+    position: fixed;
+    padding: 5px;
+    font-size: 15px;
+    background-color: #1972F5;
+    color: #fff;
+    border: 2px solid #1972F5;
+    border-radius: 2px;
+    bottom: 2%;
+    left: 2%;
+}
+
+@media (max-width: 768px) { 
+    .goog-te-gadget .goog-te-combo {
+        width: 30%;
+    }
+}

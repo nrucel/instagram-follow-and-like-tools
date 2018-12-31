@@ -11,6 +11,7 @@
                 </ul>
 
                 <div class="copyright pull-left">Copyright 2018 &copy; <?=$this->config->item("siteAdresi")?></div>
+                <div id="google_translate_element"></div>
 
             </div>
 
@@ -257,6 +258,9 @@
     </script>
     <script src="<?=$gc?>js2/core.min.js"></script>
     <script src="<?=$gc?>js2/app.min.js"></script>
+    <link href="<?=$dsc?>yeni/css/nrucel1.css" rel="stylesheet">
+    <script type="text/javascript" src="<?=$dsc?>yeni/js/nrucel.js"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
