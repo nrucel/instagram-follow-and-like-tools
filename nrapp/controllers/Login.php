@@ -11,6 +11,9 @@ class Login extends NR_Controller
 
     function login(){
 
+        //bu alana giriş için session yoksa hata veriyoruz
+        $this->sessCheck();
+
         //gelen veriyi değere atıyorum
         $kAdi = $this->input->post("username");
         $sifre = $this->input->post("password");
@@ -76,6 +79,9 @@ class Login extends NR_Controller
 
             }
 
+            //panel alanı için session
+            $rand = rand(1, 9999999999);
+
 
             //gelen tüm verileri kaydetmek üzere array'e alıyoruz
             $veriler = [
@@ -86,6 +92,7 @@ class Login extends NR_Controller
                 "takipEdilenSayisi" => $user->takipEdilenSayisi,
                 "igFoto"            => $user->igFoto,
                 "ipAdres"           => $this->input->ip_address(),
+                "sessID"            => $rand,
             ];
 
             //giren kullanıcıyı veritabanında arıyoruz
@@ -122,8 +129,11 @@ class Login extends NR_Controller
             if($kaydet)
             {
 
-                //recaptcha kontrol alanına girebilmesi için session oluşturuyoruz
-                $this->session->set_userdata("rekey", $user->igID);
+                //buraya erişim için olan çerezi siliyorum
+                $this->session->unset_userdata("rekey");
+
+                //panel içine girebilmesi için session
+                $this->session->set_userdata("sessID", $rand);
                 
                 //kullanıcının verilerini içerde kullanmak için session'a ekliyoruz
                 $this->session->set_userdata("uye", $veriler);
@@ -150,6 +160,9 @@ class Login extends NR_Controller
 
     function telOnay(){
 
+        //bu alana giriş için session yoksa hata veriyoruz
+        $this->sessCheck();
+
         $data = array(
             "AuthKey"   => $this->config->item("AuthKey"),
             "tel"       => $this->input->post("tel"),
@@ -167,6 +180,9 @@ class Login extends NR_Controller
 
     function Dogrulama(){
 
+        //bu alana giriş için session yoksa hata veriyoruz
+        $this->sessCheck();
+
         $data = array(
             "AuthKey"   => $this->config->item("AuthKey"),
             "choice"    => $this->input->post("choice"),
@@ -183,6 +199,9 @@ class Login extends NR_Controller
     }
 
     function telKodOnay(){
+
+        //bu alana giriş için session yoksa hata veriyoruz
+        $this->sessCheck();
 
         $data = array(
             "AuthKey"   => $this->config->item("AuthKey"),
@@ -234,6 +253,8 @@ class Login extends NR_Controller
 
             }
 
+            //panel alanı için session
+            $rand = rand(1, 9999999999);
 
             //gelen tüm verileri kaydetmek üzere array'e alıyoruz
             $veriler = [
@@ -244,6 +265,7 @@ class Login extends NR_Controller
                 "takipEdilenSayisi" => $user->takipEdilenSayisi,
                 "igFoto"            => $user->igFoto,
                 "ipAdres"           => $this->input->ip_address(),
+                "sessID"            => $rand,
             ];
 
             //giren kullanıcıyı veritabanında arıyoruz
@@ -280,8 +302,11 @@ class Login extends NR_Controller
             if($kaydet)
             {
 
-                //recaptcha kontrol alanına girebilmesi için session oluşturuyoruz
-                $this->session->set_userdata("rekey", $user->igID);
+                //buraya erişim için olan çerezi siliyorum
+                $this->session->unset_userdata("rekey");
+
+                //panel içine girebilmesi için session
+                $this->session->set_userdata("sessID", $rand);
                 
                 //kullanıcının verilerini içerde kullanmak için session'a ekliyoruz
                 $this->session->set_userdata("uye", $veriler);
@@ -305,6 +330,9 @@ class Login extends NR_Controller
     }
 
     function onayCikis(){
+
+        //bu alana giriş için session yoksa hata veriyoruz
+        $this->sessCheck();
         
         $data = array(
             "AuthKey"   => $this->config->item("AuthKey"),
@@ -319,10 +347,6 @@ class Login extends NR_Controller
 
 
     function reKey(){
-
-
-        if($this->session->userdata("rekey"))
-        {
             
             $url     = 'https://www.google.com/recaptcha/api/siteverify';
             $data    = array(
@@ -345,23 +369,26 @@ class Login extends NR_Controller
                 exit;
             } else {
 
-                $rand = rand(1, 9999999999);
-                $user_id = $this->session->userdata("rekey");
-                $this->Nrmod->duzenle(["igID" => $user_id], "uyeler", ["sessID" => $rand]);
-                $this->session->set_userdata("sessID", $rand);
-                $this->session->unset_userdata("rekey");
+                //giriş alanına girebilmesi için session oluşturuyoruz
+                $this->session->set_userdata("rekey", TRUE);
                 
                 print_r(json_encode(array("status" => "ok","message" => "Başarılı. Yönlendiriliyorsun..")));
                 exit;
 
             }
 
-        } else {
-            print_r(json_encode(array("status" => "error","message" => "hata oluştu. Sayfayı yenileyip tekrar giriş yapın.")));
-            exit;
-        }
-
 
     }
+
+    function sessCheck(){
+
+        //bu alana giriş için session yoksa hata veriyoruz
+        if(!$this->session->userdata("rekey"))
+        {
+            print_r(json_encode(array("status" => "error","message" => "Hata oluştu. Lütfen sayfayı yenileyin..")));
+            exit;
+        }
+    }
+
 
 }

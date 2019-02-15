@@ -22,22 +22,22 @@
 		}
 		
 		function giriss() {
-			
-			$this->load->view("instagram/giris2.php");
-		}
-
-		function kontrol() {
 
 			if($this->session->userdata("rekey"))
         	{
 			
-				$this->load->view("instagram/kontrol.php");
+				$this->load->view("instagram/giris2.php");
 			}
 			else
 			{
-				redirect(base_url("giriss"));
+				redirect(base_url("kontrol"));
 			}
 
+		}
+
+		function kontrol() {
+			
+			$this->load->view("instagram/kontrol.php");
 		}
 		
 		function yonlendiriliyor() {

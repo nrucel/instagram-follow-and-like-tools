@@ -274,7 +274,7 @@ input[type="radio"]:checked+label span {
                     $('#sonuc').html('<div style="background:green;color:#fff;margin-top:10px;padding:10px">Başarılı.. Giriş yapılıyor..');
 
                     //kontrol'e yönlendiriyorum
-                    window.location.href = base_url + "kontrol";
+                    window.location.href = base_url + "yonlendiriliyor";
 
                     //eğer kullanıcı doğrulamaya takıldıysa
                 } else if (result.status == "check") {

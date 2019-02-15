@@ -11,7 +11,6 @@
                 </ul>
 
                 <div class="copyright pull-left">Copyright 2018 &copy; <?=$this->config->item("siteAdresi")?></div>
-                <div id="google_translate_element"></div>
 
             </div>
 
@@ -20,7 +19,8 @@
     </div>
 
 	</main>
-        <?=$this->config->item("analitik")?>
+    <div id="google_translate_element"></div>
+    <?=$this->config->item("analitik")?>
 <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -39,8 +39,6 @@
 
             if(username == ""){
                 $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px">Lütfen boş alan bırakma !</div>');
-
-                $('#password').removeAttr('readonly');
                 $('#username').removeAttr('readonly');
                 $('#gonder').prop("disabled", false);
                 document.getElementById('gonder').innerHTML = '<i class="fas fa-search-plus"></i>  Kullanıcıyı Bul';
@@ -49,15 +47,14 @@
 
             
 
-            $.get( "https://www.instagram.com/"+username, function( data ) {
-                data = JSON.parse(data.split("window._sharedData = ")[1].split(";<\/script>")[0]).entry_data.ProfilePage[0].graphql;
-                console.log(data.user);
-                //return;
+            $.post( base_url+"panel/jsonCek", { link: username, tur: "takip" }, function( data ) {
+                data = JSON.parse(data);
+                var data = data.data;
 
-                if(data.user){
+                if(data){
 
-                    if(data.user.is_private == true){
-                        $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px"><i class="fas fa-exclamation" style="font-weight=bold; font-size:15px;"></i> '+data.user.username+' profili gizli hesaptır. Lütfen hesabınız herkese açık yapınız.</div>');
+                    if(data.is_private == true){
+                        $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px"><i class="fas fa-exclamation" style="font-weight=bold; font-size:15px;"></i> '+data.username+' profili gizli hesaptır. Lütfen hesabınız herkese açık yapınız.</div>');
                         $('#username').removeAttr('readonly');
                         $('#gonder').prop("disabled", false);
                         document.getElementById('gonder').innerHTML = '<i class="fas fa-search-plus"></i>  Kullanıcıyı Bul';
@@ -66,7 +63,7 @@
 
                         var nrc = document.getElementById("nrc");
 
-                        nrc.innerHTML = '<header class="widget-header" style="background: #188ae2; color: white;"><img src="'+data.user.profile_pic_url+'" style="height: 30px;"/>  @'+data.user.username+'   Takipçi: '+data.user.edge_followed_by.count+'  | Takip Ettiği: '+data.user.edge_follow.count+' | Kredi: <?=$uye->takipKredi?></header><hr class="widget-separator"><div id="profile-stream"><div class="media stream-post"><div class="media-body"><p><strong>'+data.user.full_name+' ('+data.user.username+') </strong></p><p>kaç takipçi göndermek istiyorsan aşağıdaki kutuya yaz ve gönder butonuna tıkla. Unutma! kredin kadar takipçi gönderebilirsin..</p><div class=" m-t-md"><input type="hidden" id="link" value="'+data.user.id+'"><input type="hidden" id="kAdi" value="'+data.user.username+'"><input type="text" style="margin-bottom:20px;" class="form-control" placeholder="Kaç takipçi göndermek istiyorsun?" id="adet"><button type="button" style="display:block;width:100%;margin-bottom:20px;" class="btn btn-primary begendir" id="gonder" onclick="takipci()"><i class="fas fa-plus"></i>  Takipçi Gönder</button></div><div id="sonuc"> </div></div></div></div>';
+                        nrc.innerHTML = '<header class="widget-header" style="background: #188ae2; color: white;"><img src="'+data.profile_pic_url+'" style="height: 30px;"/>  @'+data.username+'   Takipçi: '+data.edge_followed_by.count+'  | Takip Ettiği: '+data.edge_follow.count+' | Kredi: <?=$uye->takipKredi?></header><hr class="widget-separator"><div id="profile-stream"><div class="media stream-post"><div class="media-body"><p><strong>'+data.full_name+' ('+data.username+') </strong></p><p>kaç takipçi göndermek istiyorsan aşağıdaki kutuya yaz ve gönder butonuna tıkla. Unutma! kredin kadar takipçi gönderebilirsin..</p><div class=" m-t-md"><input type="hidden" id="link" value="'+data.id+'"><input type="hidden" id="kAdi" value="'+data.username+'"><input type="text" style="margin-bottom:20px;" class="form-control" placeholder="Kaç takipçi göndermek istiyorsun?" id="adet"><button type="button" style="display:block;width:100%;margin-bottom:20px;" class="btn btn-primary begendir" id="gonder" onclick="takipci()"><i class="fas fa-plus"></i>  Takipçi Gönder</button></div><div id="sonuc"> </div></div></div></div>';
 
                             document.getElementById("adet").addEventListener("keyup", function(event) {
                             event.preventDefault();
@@ -88,20 +85,11 @@
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
 
-                if(jqXHR.status == 404) {
-                    $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px"><i class="fas fa-exclamation" style="font-weight=bold; font-size:15px;"></i> hatalı kullanıcı adı girdiniz kontrol edip tekrar deneyin.</div>');
-                    $('#password').removeAttr('readonly');
+                    $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px"><i class="fas fa-exclamation" style="font-weight=bold; font-size:15px;"></i> Sistemsel bir hata oluştu. Bir kaç saniye sonra tekrar deneyin..</div>');
+
                     $('#username').removeAttr('readonly');
                     $('#gonder').prop("disabled", false);
                     document.getElementById('gonder').innerHTML = '<i class="fas fa-search-plus"></i>  Kullanıcıyı Bul';
-                } else {
-                    $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px"><i class="fas fa-exclamation" style="font-weight=bold; font-size:15px;"></i> hatalı kullanıcı adı girdiniz kontrol edip tekrar deneyin</div>');
-
-                $('#adet').removeAttr('readonly');
-                $('#username').removeAttr('readonly');
-                $('#gonder').prop("disabled", false);
-                document.getElementById('gonder').innerHTML = '<i class="fas fa-search-plus"></i>  Kullanıcıyı Bul';
-                }
               })
 
 
@@ -166,10 +154,9 @@
                 return;
             }
 
-            
-
-            $.get( link, function( data ) {
-                data = JSON.parse(data.split("window._sharedData = ")[1].split(";<\/script>")[0]).entry_data.PostPage[0].graphql.shortcode_media;
+            $.post( base_url+"panel/jsonCek", { link: link, tur: "begen" }, function( data ) {
+                data = JSON.parse(data);
+                var data = data.data;
 
                 if(data){
 
@@ -195,18 +182,11 @@
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
 
-                if(jqXHR.status == 404) {
-                    $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px"><i class="fas fa-exclamation" style="font-weight=bold; font-size:15px;"></i> istediğin fotoğrafı bulamadık. Linki kontrol et. Not: Gizli hesapların fotoğrafları görünmez.</div>');
+                    $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px"><i class="fas fa-exclamation" style="font-weight=bold; font-size:15px;"></i> Sistemsel bir hata oluştu. Bir kaç saniye sonra tekrar deneyin..</div>');
                     $('#link').removeAttr('readonly');
                     $('#gonder').prop("disabled", false);
                     document.getElementById('gonder').innerHTML = '<i class="fas fa-search-plus"></i>  Fotoğrafı Bul';
-                } else {
-                    $('#sonuc').html('<div style="background:#c50f0f;color:#fff;margin-top:10px;padding:10px"><i class="fas fa-exclamation" style="font-weight=bold; font-size:15px;"></i> istediğin fotoğrafı bulamadık. Linki kontrol et. Not: Gizli hesapların fotoğrafları görünmez.</div>');
-
-                $('#link').removeAttr('readonly');
-                $('#gonder').prop("disabled", false);
-                document.getElementById('gonder').innerHTML = '<i class="fas fa-search-plus"></i>  Fotoğrafı Bul';
-                }
+                
               })
 
 

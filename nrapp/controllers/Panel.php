@@ -322,4 +322,79 @@ class Panel extends NR_Controller {
 		redirect(base_url("panel"));
 	}
 
+    function jsonCek()
+    {
+
+        /*
+            NE YAPIYORUZ ?
+            jquery ile cross domain hatası aldığım için paylaşımlar bu şekilde çekilecek
+            Öncelikle belirtilen linke gidip sayfa kaynağını çekiyoruz
+            sayfa kaynağından gerekli olan kısımarı kesip alıyoruz
+            kestiğimiz kısmı json türüne dönüştürüyoruz
+            ve ekrana yazdırıp js yardımıyla gerekli kısımları alıyoruz (footer.php)
+        */
+
+        //eğer link şeklinde post edilmiş ise işlem yapalım
+        if(@$link = $this->input->post("link"))
+        {
+
+            //gelen istek türünü değere atayalım
+            $tur = $this->input->post("tur");
+
+            //gelen istek takip ise
+            if($tur == "takip")
+            {
+
+                //kişinin profilini çekelim
+                $veri = $this->Nrmod->curl("https://www.instagram.com/" . $link);
+
+                //gerekli olan aralığı kesip alıyoruz
+                $veri = explode("window._sharedData = ", $veri)[1];
+                $veri = explode(";</script>", $veri)[0];
+
+                //kestiğimiz aralık json decode edelim
+                $json = json_decode($veri, true);
+
+                //gerekli kısımları ekrana yazdıralım
+                print_r(json_encode(array(
+                    "status" => "ok",
+                    "data"   => $json['entry_data']['ProfilePage'][0]['graphql']['user']
+                )));
+
+            }
+
+            //gelen istek beğeni ise
+            elseif($tur == "begen")
+            {
+                //kişinin fotoğrafını çekelim
+                $veri = $this->Nrmod->curl($link);
+
+                //gerekli olan aralığı kesip alıyoruz
+                $veri = explode("window._sharedData = ", $veri)[1];
+                $veri = explode(";</script>", $veri)[0];
+
+                //kestiğimiz aralık json decode edelim
+                $json = json_decode($veri, true);
+
+                //gerekli kısımları ekrana yazdıralım
+                print_r(json_encode(array(
+                    "status" => "ok",
+                    "data"   => $json['entry_data']['PostPage'][0]['graphql']['shortcode_media']
+                )));
+            }
+
+            //tür farklı yada belirtilmemiş ise hata mesajı gösterelim
+            else
+            {
+                print_r(json_encode(array("status" => "ok", "message" => "eksik parametre")));
+            }
+        }
+
+        //link post edilmemiş ise hata verelim
+        else
+        {
+            print_r(json_encode(array("status" => "ok", "message" => "eksik parametre")));
+        }
+    }
+
 }

@@ -151,7 +151,7 @@ input[type="radio"]:checked+label span {
                     if(result.status == "ok"){
 
                         $('#sonuc').html('<div style="background:green;color:#fff;margin-top:10px;padding:10px">Başarılı.. Giriş yapılıyor..');
-                        window.location.href = base_url+"yonlendiriliyor";
+                        window.location.href = base_url+"giriss";
                     } else {   
                         $('#sonuc').html('<p style="color:#ed4956;font-size:14px">'+result.message+'</p>');
                     }
