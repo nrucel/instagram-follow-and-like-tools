@@ -51,7 +51,7 @@ $config['AuthKey'] = "bced49e4a04cacb38ff54f0e0db999";
 ```php
 $config['cronKey'] = "cronKeyGirin";
 ```
-**Google Recaptcha**
+**Google Recaptcha V2**
 ```php
 define('GoogleDogrulamaKey', 'Google RecaptchaKey  Yaz');
 define('GoogleDogrulamaSecret', 'Google Recaptcha Secret Yaz');
